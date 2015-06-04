@@ -15,6 +15,11 @@ class HumanPlayer < Player
     raise BadInputError unless move_str_arr.count >= 2
 
     parse_move_seq(move_str_arr)
+
+    rescue BadInputError
+      puts "Invalid input"
+      retry
+    end
   end
 
   def parse_move_seq(move_str_arr)
