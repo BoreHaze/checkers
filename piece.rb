@@ -31,6 +31,37 @@ class Piece
     end
   end
 
+  def legal_steps
+    steps = []
+    move_deltas.each do |dy, dx|
+      step = [position[0] + dy, position[1] + dx]
+      steps << step if @board.valid_destination?(move)
+    end
+
+    steps
+  end
+
+  def legal_jump_sequences
+    jump_sequences = []
+    move_deltas.each do |delta|
+      debugger
+      dy, dx          = delta
+      jump_to         = [position[0] + (2*dy), position[1] + (2*dx)]
+      jump_over       = [position[0] + dy, position[1] + dx]
+      child_sequences = []
+
+      if @board.valid_destination?(jump_to) && @board.jumpable_square?(jump_over, color)
+        next_board = @board.deep_dup
+        next_board[position].make_move(jump_to, jump_over)
+        child_sequences = next_board[jump_to].legal_jump_sequences
+        jump_sequences << [jump_to]
+        child_sequences.each { |seq| jump_sequences << [jump_to] + seq }
+      end
+    end
+
+    jump_sequences
+  end
+
   def perform_moves(sequence)
     if valid_move_seq?(sequence)
       perform_moves!(sequence)
