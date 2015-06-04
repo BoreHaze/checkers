@@ -57,7 +57,7 @@ class Piece
   end
 
   def promote?
-
+    position[0] == ((color == :black) ? Board::BOARD_TOP : Board::BOARD_BOT)
   end
 
 
