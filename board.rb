@@ -73,10 +73,11 @@ class Board
   end
 
   def display
-    horizontal_line = "+-------------------------------+"
+    horizontal_line = " +-------------------------------+"
+    puts "\n   0   1   2   3   4   5   6   7   "
     puts horizontal_line
-    @board.each do |row|
-      print "|"
+    @board.each_with_index do |row, idx|
+      print "#{idx}|"
       row.each  do |square|
         square.nil? ? (print "   |") : (print " #{square.render} |")
       end

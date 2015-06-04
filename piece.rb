@@ -23,7 +23,11 @@ class Piece
   end
 
   def perform_moves(sequence)
-    valid_move_seq?(sequence) ? perform_moves!(sequence) : raise InvalidMoveError
+    if valid_move_seq?(sequence)
+      perform_moves!(sequence)
+    else
+      raise InvalidMoveError
+    end
   end
 
 
@@ -43,7 +47,7 @@ class Piece
     copy_board = @board.deep_dup
 
     begin
-      copy_board[positon].perform_moves!(sequence)
+      copy_board[position].perform_moves!(sequence)
     rescue InvalidMoveError
       return false
     else
