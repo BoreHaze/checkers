@@ -7,7 +7,7 @@ require 'byebug'
 class ComputerPlayer < Player
   attr_reader :board
 
-  def initialize(color, board, name="Vladimir Putin")
+  def initialize(board, name="Vladimir Putin", color)
     super(name, color)
     @board = board
   end
@@ -26,6 +26,7 @@ class ComputerPlayer < Player
       end
     end
 
+    sleep 0.25
 
     if jump_moves.empty?
       return step_moves.sample
@@ -34,6 +35,8 @@ class ComputerPlayer < Player
     end
 
   end
+
+  def get_steps
 
 
 end

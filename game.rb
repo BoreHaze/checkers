@@ -18,6 +18,13 @@ class Game
     Game.new(board, red, black).play
   end
 
+  def self.title_fight
+    board = Board.new
+    red = ComputerPlayer.new(board, "Mike Tyson", :red)
+    black = ComputerPlayer.new(board, "Vladimir Putin", :black)
+    Game.new(board, red, black).play
+  end
+
   def initialize(board, red_player, black_player)
     @board = board
     @red_player = red_player
@@ -37,11 +44,11 @@ class Game
         puts "#{@current_player.name}'s turn"
         input_sequence = @current_player.play_turn
         piece_pos = input_sequence.shift
-        if @board[piece_pos].nil?
-          raise NoPieceError.new "NoPieceError: attempted to move#{piece_pos}"
-        end
+
+        raise NoPieceError if @board[piece_pos].nil?
 
         raise WrongColorError if @board[piece_pos].color != @current_player.color
+
         @board[piece_pos].perform_moves(input_sequence)
       rescue InvalidMoveError
         puts "Invalid move, please try again"
@@ -49,8 +56,8 @@ class Game
       rescue WrongColorError
         puts "Not your piece dawg, try again"
         retry
-      rescue NoPieceError => e
-        puts e.message
+      rescue NoPieceError
+        puts "No piece there, try again"
         retry
       end
 
@@ -60,8 +67,6 @@ class Game
 
     toggle_player
     puts "#{@current_player.name} won!"
-    @board.display
-
   end
 
   def toggle_player
