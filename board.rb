@@ -34,7 +34,7 @@ class Board
 
   def deep_dup
     new_board = Board.new
-    pieces.each { |piece| Piece.new(new_board, piece.position, piece.color) }
+    pieces.each { |piece| Piece.new(new_board, piece.position, piece.color, piece.king?) }
     new_board
   end
 
@@ -48,7 +48,7 @@ class Board
 
   def lost?(color)
     remaining = color_pieces(color)
-    remaining.empty? || remaining.none? { |piece| !piece.has_legal_moves? }
+    remaining.empty? || remaining.none? { |piece| piece.has_legal_moves? }
   end
 
   def [](pos)

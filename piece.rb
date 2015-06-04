@@ -13,11 +13,11 @@ class Piece
 
   attr_reader :position, :color
 
-  def initialize(board, position, color)
+  def initialize(board, position, color, king=false)
     @color = color
     @position = position
     @board = board
-    @king = false
+    @king = king
 
     @board[position] = self
   end
@@ -35,7 +35,7 @@ class Piece
     steps = []
     move_deltas.each do |dy, dx|
       step = [position[0] + dy, position[1] + dx]
-      steps << step if @board.valid_destination?(move)
+      steps << step if @board.valid_destination?(step)
     end
 
     steps
@@ -44,7 +44,6 @@ class Piece
   def legal_jump_sequences
     jump_sequences = []
     move_deltas.each do |delta|
-      debugger
       dy, dx          = delta
       jump_to         = [position[0] + (2*dy), position[1] + (2*dx)]
       jump_over       = [position[0] + dy, position[1] + dx]
@@ -54,7 +53,9 @@ class Piece
         next_board = @board.deep_dup
         next_board[position].make_move(jump_to, jump_over)
         child_sequences = next_board[jump_to].legal_jump_sequences
+        #at least one valid jump, add it to result
         jump_sequences << [jump_to]
+        #reccurse on all possible jump_sequences from that location
         child_sequences.each { |seq| jump_sequences << [jump_to] + seq }
       end
     end
@@ -143,6 +144,10 @@ class Piece
   def render
     return (color == :black ? "♚" : "♔") if king?
     color == :black ? "●" : "○"
+  end
+
+  def inspect
+    king? ? (puts "#{color} king at #{position}") : (puts "#{color} man at #{position}")
   end
 
 end

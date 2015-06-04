@@ -11,14 +11,16 @@ class HumanPlayer < Player
     puts "Please enter a single move in the form of 'yx, yx' (from, to)"
     puts "For move sequences, simply add additional comma separated coordinates"
 
-    move_str_arr = gets.chomp.split(',').map { |move| move.strip.split('') }
-    raise BadInputError unless move_str_arr.count >= 2
+    begin
+      move_str_arr = gets.chomp.split(',').map { |move| move.strip.split('') }
+      raise BadInputError unless move_str_arr.count >= 2
 
-    parse_move_seq(move_str_arr)
+      parse_move_seq(move_str_arr)
 
     rescue BadInputError
-      puts "Invalid input"
+      puts "Invalid input, pls retry"
       retry
+
     end
   end
 
