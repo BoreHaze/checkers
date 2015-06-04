@@ -42,6 +42,14 @@ class Board
     @board[y][x] = piece
   end
 
+  def in_bounds?(pos)
+    pos.all? { |coord| coord.between?(BOARD_TOP, BOARD_BOT) }
+  end
+
+  def occupied?(pos)
+    !self[pos].nil?
+  end
+
   def display
     horizontal_line = "+-------------------------------+"
     puts horizontal_line

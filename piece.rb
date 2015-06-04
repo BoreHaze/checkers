@@ -23,7 +23,7 @@ class Piece
       [position[0] + dy, position[1] + dx] == pos
     end
 
-    return false if @board.out_of_bounds?(pos) || @board.occupied?(pos)
+    return false unless @board.in_bounds?(pos) && !@board.occupied?(pos)
 
     @board[position] = nil
     @position        = pos
