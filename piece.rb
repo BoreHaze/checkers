@@ -22,6 +22,11 @@ class Piece
     @board[position] = self
   end
 
+  def perform_moves(sequence)
+    valid_move_seq?(sequence) ? perform_moves!(sequence) : raise InvalidMoveError
+  end
+
+
   def perform_moves!(sequence)
     if sequence.count == 1
       if !perform_slide(sequence[0])
@@ -44,7 +49,6 @@ class Piece
     else
       return true
     end
-    
   end
 
   def perform_slide(pos)
