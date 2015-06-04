@@ -32,6 +32,16 @@ class Board
     end
   end
 
+  def deep_dup
+    new_board = Board.new
+    pieces.each { |piece| Piece.new(new_board, piece.position, piece.color) }
+    new_board
+  end
+
+  def pieces
+    @board.flatten.compact
+  end
+
   def [](pos)
     y, x = pos
     @board[y][x]

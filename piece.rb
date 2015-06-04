@@ -3,6 +3,9 @@
 require_relative 'board.rb'
 require 'byebug'
 
+class InvalidMoveError < StandardError
+end
+
 class Piece
 
   UP_DELTAS   = [[-1,-1], [-1, 1]]
@@ -30,7 +33,20 @@ class Piece
       end
     end
   end
-  
+
+  def valid_move_seq?(sequence)
+    copy_board = @board.deep_dup
+
+    begin
+      copy_board[positon].perform_moves!(sequence)
+    rescue InvalidMoveError
+      return false
+    else
+      return true
+    end
+    
+  end
+
   def perform_slide(pos)
     return false unless move_deltas.any? do |dy, dx|
       [position[0] + dy, position[1] + dx] == pos
