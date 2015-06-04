@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_relative 'board.rb'
 require 'byebug'
 
@@ -42,21 +44,22 @@ class Piece
     return false unless @board.in_bounds?(pos) && !@board.occupied?(pos)
 
     jumped_pos = [position[0] + delta[0], position[1] + delta[1]]
-    return false unless @board.occupied?(jumped_pos)
-                     && @board.enemy?(jumped_pos, color)
 
-     @board[position] = nil
-     @position        = pos
-     @board[position] = self
+    return false unless @board.occupied?(jumped_pos) && @board.enemy?(jumped_pos, color)
 
-     @board[jumped_pos] = nil
+    @board[position] = nil
+    @position        = pos
+    @board[position] = self
 
-     @king = true if promote?
+    @board[jumped_pos] = nil
+
+    @king = true if promote?
   end
 
   def promote?
 
   end
+
 
   def move_deltas
     return UP_DELTAS + DOWN_DELTAS if king?
