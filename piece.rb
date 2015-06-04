@@ -102,6 +102,7 @@ class Piece
   end
 
   def render
+    return (color == :black ? "♚" : "♔") if king?
     color == :black ? "●" : "○"
   end
 
