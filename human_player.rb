@@ -11,15 +11,19 @@ class HumanPlayer < Player
     puts "Please enter a single move in the form of 'yx, yx' (from, to)"
     puts "For move sequences, simply add additional comma separated coordinates"
 
-    move_sequence_str = gets.chomp.split(',').map { |move| move.strip.split('') }
-    raise BadInputError unless move_sequence_str.count >= 2
+    move_str_arr = gets.chomp.split(',').map { |move| move.strip.split('') }
+    raise BadInputError unless move_str_arr.count >= 2
 
+    parse_move_seq(move_str_arr)
+  end
+
+  def parse_move_seq(move_str_arr)
     move_sequence = []
-    move_sequence_str.each do |pair|
+    move_str_arr.each do |pair|
       raise BadInputError unless pair.all? { |n| NUM_STRS.include?(n) }
       new_pair = []
-      pair.each { |n| new_pair << n.to_str }
-      move_sequence << pair
+      pair.each { |n| new_pair << n.to_i }
+      move_sequence << new_pair
     end
 
     move_sequence

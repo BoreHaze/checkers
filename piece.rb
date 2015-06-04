@@ -22,6 +22,15 @@ class Piece
     @board[position] = self
   end
 
+  def has_legal_moves?
+    move_deltas.any? do |dy, dx|
+      move = [position[0] + dy, position[1] + dx]
+      next true if @board.valid_destination?(move)
+      j_move = [move[0] + dy, move[1] + dx]
+      next true if @board.valid_destination?(j_move) && @board.jumpable_square?(move, color)
+    end
+  end
+
   def perform_moves(sequence)
     if valid_move_seq?(sequence)
       perform_moves!(sequence)
@@ -29,7 +38,6 @@ class Piece
       raise InvalidMoveError
     end
   end
-
 
   def perform_moves!(sequence)
     if sequence.count == 1

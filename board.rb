@@ -42,6 +42,15 @@ class Board
     @board.flatten.compact
   end
 
+  def color_pieces(color)
+    pieces.select { |piece| piece.color == color }
+  end
+
+  def lost?(color)
+    remaining = color_pieces(color)
+    remaining.empty? || remaining.all? {|piece| !piece.has_legal_moves? }
+  end
+
   def [](pos)
     y, x = pos
     @board[y][x]
