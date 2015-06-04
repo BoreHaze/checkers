@@ -48,4 +48,8 @@ class Piece
     @king
   end
 
+  def render
+    "●"
+  end
+
 end
