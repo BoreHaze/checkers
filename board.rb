@@ -16,7 +16,7 @@ class Board
     COLORS.each { |color| setup_side(color) }
   end
 
-  def setup_color(color)
+  def setup_side(color)
     start_row, direction = ((color == :red) ? [BOARD_TOP, 1] : [BOARD_BOT, -1])
     row = start_row
 
@@ -32,4 +32,28 @@ class Board
     end
   end
 
+  def [](pos)
+    y, x = pos
+    @board[y][x]
+  end
+
+  def []=(pos, piece)
+    y, x = pos
+    @board[y][x] = piece
+  end
+
+  def display
+    horizontal_line = "+-------------------------------+"
+    puts horizontal_line
+    @board.each do |row|
+      print "|"
+      row.each  do |square|
+        square.nil? ? (print "   |") : (print " #{square.render} |")
+      end
+
+      puts "\n" + horizontal_line
+    end
+
+    nil
+  end
 end

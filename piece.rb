@@ -1,3 +1,6 @@
+require_relative 'board.rb'
+require 'byebug'
+
 class Piece
 
   UP_DELTAS   = [[-1,-1], [-1, 1]]
@@ -10,10 +13,12 @@ class Piece
     @position = position
     @board = board
     @king = false
+
+    @board[position] = self
   end
 
   def perform_slide(pos)
-
+    debugger
     return false unless move_deltas.any? do |dy, dx|
       [position[0] + dy, position[1] + dx] == pos
     end
@@ -30,8 +35,6 @@ class Piece
 
   def perform_jump(pos)
 
-
-
   end
 
   def promote?
@@ -41,7 +44,7 @@ class Piece
   def move_deltas
     return UP_DELTAS + DOWN_DELTAS if king?
 
-    @color == :red ? UP_DELTAS : DOWN_DELTAS
+    @color == :black ? UP_DELTAS : DOWN_DELTAS
   end
 
   def king?
@@ -49,7 +52,7 @@ class Piece
   end
 
   def render
-    "●"
+    color == :black ? "●" : "○"
   end
 
 end
