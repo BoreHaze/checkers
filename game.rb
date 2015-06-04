@@ -28,7 +28,7 @@ class Game
   def play
 
     puts "Welcome to checkers"
-    @board.setup_game unless
+    @board.setup_game
     @board.display
 
     until @board.lost?(@current_player.color) do

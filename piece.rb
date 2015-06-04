@@ -1,7 +1,9 @@
 # encoding: utf-8
 
 require_relative 'board.rb'
+require 'colorize'
 require 'byebug'
+
 
 class InvalidMoveError < StandardError
 end
@@ -142,8 +144,9 @@ class Piece
   end
 
   def render
-    return (color == :black ? "♚" : "♔") if king?
-    color == :black ? "●" : "○"
+    return (color == :black ? "♚" : "♚".colorize(:red)) if king?
+
+    color == :black ? "●" : "●".colorize(:red)
   end
 
   def inspect

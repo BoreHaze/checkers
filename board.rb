@@ -1,4 +1,5 @@
 require_relative 'piece'
+require 'colorize'
 
 class Board
 
@@ -82,16 +83,17 @@ class Board
   end
 
   def display
-    horizontal_line = " +-------------------------------+"
-    puts "\n   0   1   2   3   4   5   6   7   "
-    puts horizontal_line
-    @board.each_with_index do |row, idx|
-      print "#{idx}|"
-      row.each  do |square|
-        square.nil? ? (print "   |") : (print " #{square.render} |")
+    #horizontal_line = " +-------------------------------+"
+    puts "\n  0  1  2  3  4  5  6  7 "
+    #puts horizontal_line
+    @board.each_with_index do |row, row_idx|
+      print "#{row_idx}"
+      row.each_with_index  do |square, col_idx|
+        (row_idx + col_idx).even? ? (bg = :yellow) : (bg = :red)
+        square.nil? ? (print "   ".colorize(:background => bg)) : (print " #{square.render} ".colorize(:background => bg))
       end
-
-      puts "\n" + horizontal_line
+      puts "\n"
+      #puts "\n" + horizontal_line
     end
 
     nil

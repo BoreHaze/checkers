@@ -7,8 +7,8 @@ require 'byebug'
 class ComputerPlayer < Player
   attr_reader :board
 
-  def initialize(board, color)
-    super(name="Vladimir Putin", color)
+  def initialize(color, board, name="Vladimir Putin")
+    super(name, color)
     @board = board
   end
 
