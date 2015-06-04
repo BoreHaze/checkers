@@ -19,18 +19,28 @@ class Piece
     @board[position] = self
   end
 
+  def perform_moves!(sequence)
+    if sequence.count == 1
+      if !perform_slide(sequence[0])
+        raise InvalidMoveError unless perform_jump(sequence.first)
+      end
+    else
+      sequence.each do |move|
+        raise InvalidMoveError unless perform_jump(move)
+      end
+    end
+  end
+  
   def perform_slide(pos)
     return false unless move_deltas.any? do |dy, dx|
       [position[0] + dy, position[1] + dx] == pos
     end
 
     return false unless @board.valid_destination?(pos)
-
     make_move(pos)
   end
 
   def perform_jump(pos)
-
     delta = []
     return false unless move_deltas.any? do |dy, dx|
       delta = [dy, dx]
@@ -38,9 +48,7 @@ class Piece
     end
 
     return false unless @board.valid_destination?(pos)
-
     jumped_pos = [position[0] + delta[0], position[1] + delta[1]]
-
     return false unless @board.jumpable_square?(jumped_pos, color)
 
     make_move(pos, jumped_pos)
@@ -51,7 +59,7 @@ class Piece
     @position          = pos
     @board[position]   = self
     @board[jumped_pos] = nil unless jumped_pos.nil?
-    
+
     @king = true if promote?
     true
   end
@@ -62,7 +70,6 @@ class Piece
 
   def move_deltas
     return UP_DELTAS + DOWN_DELTAS if king?
-
     @color == :black ? UP_DELTAS : DOWN_DELTAS
   end
 
