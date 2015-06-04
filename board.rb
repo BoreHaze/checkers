@@ -50,6 +50,10 @@ class Board
     !self[pos].nil?
   end
 
+  def enemy?(pos, color)
+    self[pos].color != color
+  end
+
   def display
     horizontal_line = "+-------------------------------+"
     puts horizontal_line
