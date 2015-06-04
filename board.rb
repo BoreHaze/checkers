@@ -42,6 +42,14 @@ class Board
     @board[y][x] = piece
   end
 
+  def valid_destination?(pos)
+    in_bounds?(pos) && !occupied?(pos)
+  end
+
+  def jumpable_square?(pos, color)
+    occupied?(pos) && enemy?(pos, color)
+  end
+
   def in_bounds?(pos)
     pos.all? { |coord| coord.between?(BOARD_TOP, BOARD_BOT) }
   end

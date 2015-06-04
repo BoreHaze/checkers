@@ -24,13 +24,9 @@ class Piece
       [position[0] + dy, position[1] + dx] == pos
     end
 
-    return false unless @board.in_bounds?(pos) && !@board.occupied?(pos)
+    return false unless @board.valid_destination?(pos)
 
-    @board[position] = nil
-    @position        = pos
-    @board[position] = self
-
-    @king = true if promote?
+    make_move(pos)
   end
 
   def perform_jump(pos)
@@ -41,25 +37,28 @@ class Piece
       [position[0] + (dy*2), position[1] + (dx*2)] == pos
     end
 
-    return false unless @board.in_bounds?(pos) && !@board.occupied?(pos)
+    return false unless @board.valid_destination?(pos)
 
     jumped_pos = [position[0] + delta[0], position[1] + delta[1]]
 
-    return false unless @board.occupied?(jumped_pos) && @board.enemy?(jumped_pos, color)
+    return false unless @board.jumpable_square?(jumped_pos, color)
 
-    @board[position] = nil
-    @position        = pos
-    @board[position] = self
+    make_move(pos, jumped_pos)
+  end
 
-    @board[jumped_pos] = nil
-
+  def make_move(pos, jumped_pos=nil)
+    @board[position]   = nil
+    @position          = pos
+    @board[position]   = self
+    @board[jumped_pos] = nil unless jumped_pos.nil?
+    
     @king = true if promote?
+    true
   end
 
   def promote?
     position[0] == ((color == :black) ? Board::BOARD_TOP : Board::BOARD_BOT)
   end
-
 
   def move_deltas
     return UP_DELTAS + DOWN_DELTAS if king?
